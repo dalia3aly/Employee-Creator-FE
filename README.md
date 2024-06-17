@@ -66,7 +66,7 @@ Once the Employee Creator App is up and running, you can perform the following a
 
 ## Testing
 
-The frontend of the Employee Creator App uses Jest and React Testing Library for unit testing. For more details on Jest configuration and setup for **Vite** applications, you can refer to this [article](https://dev.to/teyim/effortless-testing-setup-for-react-with-vite-typescript-jest-and-react-testing-library-1c48).
+The frontend of the Employee Creator App uses Jest and React Testing Library for unit testing. For more details on Jest configuration and setup for **Vite** applications, you can refer to this [dev.to article](https://dev.to/teyim/effortless-testing-setup-for-react-with-vite-typescript-jest-and-react-testing-library-1c48).
 
 ### Testing Tech Stack
 
