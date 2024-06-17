@@ -1,6 +1,6 @@
 # Employee Creator Frontend
 
-This is the frontend of the Employee Creator App built with Vite, React, TypeScript, and Tailwind CSS. The frontend allows users to interact with the Employee API to get, create, update, and delete employees.
+This is the frontend of the Employee Creator App built with **Vite, React, TypeScript, Tailwind CSS** and **Redux kit** for state management. The frontend allows users to interact with the Employee API to get, create, update, and delete employees.
 
 ## Table of Contents
 
