@@ -5,13 +5,21 @@ export interface Employee {
   lastName: string;
   email: string;
   mobileNumber: string;
-  residentialAddress?: string;
   contractType: ContractType;
   startDate: string;
   finishDate?: string;
   onGoing?: boolean;
   employmentType: EmploymentType;
   hoursPerWeek?: number;
+}
+
+export interface Address {
+  unitNumber?: string;
+  streetAddress?: string;
+  suburb?: string;
+  state?: string;
+  postcode?: string;
+  country: string;
 }
 
 export enum ContractType {

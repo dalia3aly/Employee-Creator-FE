@@ -9,13 +9,16 @@ import EmployeeListPage from "./pages/EmployeeListPage/EmployeeListPage";
 import EmployeeDetailPage from "./pages/EmployeeDetailPage/EmployeeDetailPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import Header from "./components/Header/Header";
+import LoginPage from "./pages/LoginPage/LoginPage";
+import HomePage from "./pages/HomePage/HomePage";
 
 const App: React.FC = () => {
   return (
     <Router>
       <Header />
       <Routes>
-        <Route path="/" element={<Navigate to="/employees" />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/employees" element={<EmployeeListPage />} />
         <Route path="/employees/new" element={<EmployeeDetailPage />} />
         <Route path="/employees/:id" element={<EmployeeDetailPage />} />

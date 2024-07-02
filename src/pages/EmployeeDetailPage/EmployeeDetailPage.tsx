@@ -1,13 +1,25 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import EmployeeForm from "../../components/EmployeeForm/EmployeeForm";
+import { createEmployee } from "../../api/employeeService";
+import { EmployeeFormData } from "../../components/EmployeeForm/EmployeeForm";
 
 const EmployeeDetailPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+
+  const handleCreateEmployee = async (data: EmployeeFormData) => {
+    try {
+      await createEmployee(data);
+      navigate("/employees");
+    } catch (error) {
+      console.error("Failed to create employee", error);
+    }
+  };
 
   return (
-    <div>
-      <h1>{id ? `Edit Employee ${id}` : "Add Employee"}</h1>
-      {/* EmployeeForm component will go here */}
+    <div className="employee-detail-page">
+      <h2>Create New Employee</h2>
+      <EmployeeForm onSubmit={handleCreateEmployee} />
     </div>
   );
 };
