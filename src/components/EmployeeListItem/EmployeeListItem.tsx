@@ -18,10 +18,11 @@ const EmployeeListItem: React.FC<EmployeeListItemProps> = ({
     <div className="flex justify-between items-center p-4 border-b">
       <div>
         <h3 className="text-lg font-bold">{`${employee.firstName} ${employee.lastName}`}</h3>
-        <p>
+        <p className="text-sm">
           {employee.contractType} - {employee.employmentType}
         </p>
-        <p>{employee.email}</p>
+        <p>Email: {employee.email}</p>
+        <p>Phone: {employee.mobileNumber}</p>
       </div>
       <div>
         <EditButton onClick={() => onEdit(employee.id)} className="mr-2">

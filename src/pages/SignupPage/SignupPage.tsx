@@ -1,33 +1,37 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import LoginForm from "../../components/Login/LoginForm";
-import { login } from "../../api/authService";
+import SignupForm from "../../components/Signup/SignupForm";
+import { signup } from "../../api/authService";
 
-const LoginPage: React.FC = () => {
+const SignupPage: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleLogin = async (data: { username: string; password: string }) => {
+  const handleSignup = async (data: {
+    username: string;
+    password: string;
+    email: string;
+  }) => {
     try {
-      const response = await login(data.username, data.password);
+      const response = await signup(data.username, data.password, data.email);
       localStorage.setItem("token", response.token);
       navigate("/employees");
     } catch (error) {
-      console.error("Login failed", error);
+      console.error("Signup failed", error);
     }
   };
 
   return (
     <div
       className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center"
-      style={{ backgroundImage: `url(/hm.png)` }}>
+      style={{ backgroundImage: `url(/bk.png)` }}>
       <h2 className="text-xl font-semibold mb-4 mt-8 flex-col items-center justify-center max-w-60 bg-gray-300 p-4 rounded-md mx-auto my-auto">
-        Admin Login
+        Admin Signup
       </h2>
       <div>
-        <LoginForm onSubmit={handleLogin} />
+        <SignupForm onSubmit={handleSignup} />
       </div>
     </div>
   );
 };
 
-export default LoginPage;
+export default SignupPage;

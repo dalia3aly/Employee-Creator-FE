@@ -11,6 +11,7 @@ export interface Employee {
   onGoing?: boolean;
   employmentType: EmploymentType;
   hoursPerWeek?: number;
+  address?: Address;
 }
 
 export interface Address {

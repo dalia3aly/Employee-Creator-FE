@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { fetchEmployees, deleteEmployee } from "../../api/employeeService";
+import {
+  fetchEmployees,
+  deleteEmployee,
+  updateEmployee,
+} from "../../api/employeeService";
 import EmployeeListItem from "../../components/EmployeeListItem/EmployeeListItem";
-import AddEmployee from "../../components/AddEmployee/AddEmployee";
+import Modal from "../../components/Modal/Modal";
+import EmployeeForm, {
+  EmployeeFormData,
+} from "../../components/EmployeeForm/EmployeeForm";
 import { Employee } from "../../types";
 
 const EmployeeListPage: React.FC = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] =
+    useState<EmployeeFormData | null>(null);
 
   useEffect(() => {
     const getEmployees = async () => {
@@ -16,8 +26,23 @@ const EmployeeListPage: React.FC = () => {
   }, []);
 
   const handleEdit = (id: number) => {
+    const employee = employees.find((emp) => emp.id === id);
+    if (employee) {
+      setSelectedEmployee({
+        ...employee,
+        address: employee.address || {
+          unitNumber: "",
+          streetAddress: "",
+          suburb: "",
+          state: "",
+          postcode: "",
+          country: "Australia",
+        },
+        hoursPerWeek: employee.hoursPerWeek || 0,
+      });
+      setIsModalOpen(true);
+    }
     console.log("Edit employee:", id);
-    // Navigate to edit page
   };
 
   const handleRemove = async (id: number) => {
@@ -25,10 +50,27 @@ const EmployeeListPage: React.FC = () => {
     setEmployees(employees.filter((employee) => employee.id !== id));
   };
 
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedEmployee(null);
+  };
+
+  const handleUpdateEmployee = async (data: EmployeeFormData) => {
+    if (selectedEmployee && selectedEmployee.id) {
+      await updateEmployee(selectedEmployee.id, data);
+      const updatedEmployees = employees.map((emp) =>
+        emp.id === selectedEmployee.id ? { ...emp, ...data } : emp
+      );
+      setEmployees(updatedEmployees);
+      setIsModalOpen(false);
+      setSelectedEmployee(null);
+    }
+  };
+
   return (
-    <div className="flex flex-col  min-h-screen bg-cover bg-center"
+    <div
+      className="flex flex-col min-h-screen bg-cover bg-center"
       style={{ backgroundImage: `url(/pgbk.png)` }}>
-      {/* <AddEmployee /> */}
       {employees.map((employee) => (
         <EmployeeListItem
           key={employee.id}
@@ -37,6 +79,14 @@ const EmployeeListPage: React.FC = () => {
           onRemove={handleRemove}
         />
       ))}
+      {isModalOpen && selectedEmployee && (
+        <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+          <EmployeeForm
+            onSubmit={handleUpdateEmployee}
+            defaultValues={selectedEmployee}
+          />
+        </Modal>
+      )}
     </div>
   );
 };

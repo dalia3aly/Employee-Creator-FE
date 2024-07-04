@@ -8,3 +8,22 @@ export const login = async (username: string, password: string) => {
   localStorage.setItem("token", token);
   return response.data;
 };
+
+export const signup = async (
+  username: string,
+  password: string,
+  email: string
+) => {
+  const response = await axios.post(`${API_URL}/signup`, {
+    username,
+    password,
+    email,
+  });
+  const token = response.data.token;
+  localStorage.setItem("token", token);
+  return response.data;
+};
+
+export const signout = () => {
+  localStorage.removeItem("token");
+};

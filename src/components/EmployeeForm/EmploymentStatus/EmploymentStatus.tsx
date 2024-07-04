@@ -87,8 +87,8 @@ const EmploymentStatus: React.FC<EmploymentStatusProps> = ({
         control={control}
         render={({ field }) => (
           <select {...field} className="w-full mt-1 p-2 border rounded">
-            <option value="FULL_TIME">Full-time</option>
-            <option value="PART_TIME">Part-time</option>
+            <option value="Full Time">Full-time</option>
+            <option value="Part Time">Part-time</option>
           </select>
         )}
       />

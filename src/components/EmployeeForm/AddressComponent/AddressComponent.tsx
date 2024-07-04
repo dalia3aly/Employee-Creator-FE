@@ -7,14 +7,14 @@ import {
 } from "../../../api/addressService";
 
 const australianStates = [
-  "New South Wales",
-  "Victoria",
-  "Queensland",
-  "Western Australia",
-  "South Australia",
-  "Tasmania",
-  "Australian Capital Territory",
-  "Northern Territory",
+  "NSW",
+  "VIC",
+  "QLD",
+  "WA",
+  "SA",
+  "TAS",
+  "ACT",
+  "NT",
 ];
 
 interface AddressComponentProps {
@@ -162,7 +162,9 @@ const AddressComponent: React.FC<AddressComponentProps> = ({
             <div>
               <select {...field} className="w-full mt-1 p-2 border rounded">
                 {australianStates.map((state) => (
-                  <option key={state} value={state}>
+                  <option 
+                  defaultValue={state === "NSW" ? "selected" : ""}
+                  key={state} value={state}>
                     {state}
                   </option>
                 ))}
