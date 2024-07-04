@@ -29,42 +29,46 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="login-form">
-      <div className="mb-4">
-        <label className="block text-gray-700">Username</label>
-        <Controller
-          name="username"
-          control={control}
-          render={({ field }) => (
-            <input {...field} className="w-full mt-1 p-2 border rounded" />
+      <div className="flex-col items-center justify-center max-w-60 bg-gray-300 p-4 rounded-md mx-auto my-auto">
+        <div className="mb-4">
+          <label className="block text-gray-700">Username</label>
+          <Controller
+            name="username"
+            control={control}
+            render={({ field }) => (
+              <input {...field} className=" mt-1 p-2 border rounded" />
+            )}
+          />
+          {errors.username && (
+            <p className="text-red-600">{errors.username.message}</p>
           )}
-        />
-        {errors.username && (
-          <p className="text-red-600">{errors.username.message}</p>
-        )}
-      </div>
-      <div className="mb-4">
-        <label className="block text-gray-700">Password</label>
-        <Controller
-          name="password"
-          control={control}
-          render={({ field }) => (
-            <input
-              {...field}
-              type="password"
-              className="w-full mt-1 p-2 border rounded"
-            />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700">Password</label>
+          <Controller
+            name="password"
+            control={control}
+            render={({ field }) => (
+              <input
+                {...field}
+                type="password"
+                className=" mt-1 p-2 border rounded"
+              />
+            )}
+          />
+          {errors.password && (
+            <p className="text-red-600">{errors.password.message}</p>
           )}
-        />
-        {errors.password && (
-          <p className="text-red-600">{errors.password.message}</p>
-        )}
-      </div>
-      <div className="flex justify-end">
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded">
-          Login
-        </button>
+        </div>
+
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded">
+            Login
+          </button>
+        </div>
       </div>
     </form>
   );

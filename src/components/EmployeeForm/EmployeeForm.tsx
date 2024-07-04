@@ -1,5 +1,5 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { ContractType, EmploymentType } from "../../types";
@@ -47,11 +47,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
   onSubmit,
   defaultValues,
 }) => {
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<EmployeeFormData>({
+  const methods = useForm<EmployeeFormData>({
     resolver: zodResolver(employeeSchema),
     defaultValues: defaultValues || {
       id: undefined,
@@ -78,25 +74,39 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
   });
 
   return (
-    <div className="flex flex-col items-center justify-start min-w-8 min-h-screen bg-gray-100">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="bg-gray-200 shadow-md rounded px-8 pt-6 pb-8 mb-4 min-w-96">
-        <PersonalInformation control={control} errors={errors} />
-        <ContactDetails control={control} errors={errors} />
-        <EmploymentStatus control={control} errors={errors} />
-        <div className="mt-4">
-          <AddressComponent control={control} errors={errors} />
-        </div>
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            className="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded">
-            Save
-          </button>
-        </div>
-      </form>
-    </div>
+    <FormProvider {...methods}>
+      <div className="flex flex-col items-center justify-start min-w-8 min-h-screen bg-gray-100">
+        <form
+          onSubmit={methods.handleSubmit(onSubmit)}
+          className="bg-gray-200 shadow-md rounded px-8 pt-6 pb-8 mb-4 min-w-96">
+          <PersonalInformation
+            control={methods.control}
+            errors={methods.formState.errors}
+          />
+          <ContactDetails
+            control={methods.control}
+            errors={methods.formState.errors}
+          />
+          <EmploymentStatus
+            control={methods.control}
+            errors={methods.formState.errors}
+          />
+          <div className="mt-4">
+            <AddressComponent
+              control={methods.control}
+              errors={methods.formState.errors}
+            />
+          </div>
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded">
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </FormProvider>
   );
 };
 

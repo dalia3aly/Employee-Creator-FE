@@ -7,6 +7,9 @@ const Header: React.FC = () => {
       <nav>
         <ul className="flex space-x-4">
           <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
             <Link to="/employees">Employees' List</Link>
           </li>
           <li>

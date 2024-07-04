@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Controller, Control, useFormContext } from "react-hook-form";
 import { EmployeeFormData } from "../EmployeeForm";
+import {
+  fetchAddressSuggestions,
+  fetchPlaceDetails,
+} from "../../../api/addressService";
 
 const australianStates = [
   "New South Wales",
@@ -30,46 +34,59 @@ const AddressComponent: React.FC<AddressComponentProps> = ({
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const { setValue } = useFormContext<EmployeeFormData>();
 
-  const fetchAddressSuggestions = async (query: string) => {
+  const handleFetchAddressSuggestions = async (query: string) => {
     if (query.length < 3) {
       setSuggestions([]);
       return;
     }
 
-    const response = await fetch(
-      `http://localhost:8080/api/address/autocomplete?input=${query}`
-    );
-    const data = await response.json();
-
-    setSuggestions(data.predictions);
+    try {
+      const predictions = await fetchAddressSuggestions(query);
+      setSuggestions(predictions);
+    } catch (error) {
+      console.error("Error fetching address suggestions: ", error);
+    }
   };
 
-  const fetchPlaceDetails = async (placeId: string) => {
-    const response = await fetch(
-      `http://localhost:8080/api/address/details?placeId=${placeId}`
-    );
-    const data = await response.json();
+  const handleFetchPlaceDetails = async (placeId: string) => {
+    try {
+      const addressComponents = await fetchPlaceDetails(placeId);
+      const streetNumberAndName = addressComponents.find((component: any) =>
+        component.types.includes("route")
+      )?.long_name;
+      const streetNumber = addressComponents.find((component: any) =>
+        component.types.includes("street_number")
+      )?.long_name;
+      const suburb = addressComponents.find((component: any) =>
+        component.types.includes("locality")
+      )?.long_name;
+      const postcode = addressComponents.find((component: any) =>
+        component.types.includes("postal_code")
+      )?.long_name;
 
-    return data.result.address_components;
+      if (streetNumber && streetNumberAndName) {
+        setValue(
+          "address.streetAddress",
+          `${streetNumber} ${streetNumberAndName}`
+        );
+      }
+      if (suburb) {
+        setValue("address.suburb", suburb);
+      }
+      if (postcode) {
+        setValue("address.postcode", postcode);
+      }
+      setSuggestions([]);
+    } catch (error) {
+      console.error("Error fetching place details: ", error);
+    }
   };
 
-  const handleSuggestionClick = async (suggestion: Suggestion) => {
-    const addressComponents = await fetchPlaceDetails(suggestion.place_id);
-
-    const suburb = addressComponents.find((component: any) =>
-      component.types.includes("locality")
-    )?.long_name;
-    const postcode = addressComponents.find((component: any) =>
-      component.types.includes("postal_code")
-    )?.long_name;
-
-    if (suburb) {
-      setValue("address.suburb", suburb);
-    }
-    if (postcode) {
-      setValue("address.postcode", postcode);
-    }
-    setSuggestions([]);
+  const handleSuggestionClick = (suggestion: Suggestion) => {
+    handleFetchPlaceDetails(suggestion.place_id);
+    // Extract and set only the street number and name
+    const [streetNumberAndName] = suggestion.description.split(",");
+    setValue("address.streetAddress", streetNumberAndName);
   };
 
   return (
@@ -100,7 +117,7 @@ const AddressComponent: React.FC<AddressComponentProps> = ({
                 className="w-full mt-1 p-2 border rounded"
                 onChange={(e) => {
                   field.onChange(e);
-                  fetchAddressSuggestions(e.target.value);
+                  handleFetchAddressSuggestions(e.target.value);
                 }}
               />
               {suggestions.length > 0 && (

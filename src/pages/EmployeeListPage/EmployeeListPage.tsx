@@ -26,8 +26,9 @@ const EmployeeListPage: React.FC = () => {
   };
 
   return (
-    <div>
-      <AddEmployee />
+    <div className="flex flex-col  min-h-screen bg-cover bg-center"
+      style={{ backgroundImage: `url(/pgbk.png)` }}>
+      {/* <AddEmployee /> */}
       {employees.map((employee) => (
         <EmployeeListItem
           key={employee.id}
