@@ -14,7 +14,7 @@ export const signup = async (
   password: string,
   email: string
 ) => {
-  const response = await axios.post(`${API_URL}/signup`, {
+  const response = await axios.post(`${API_URL}/register`, {
     username,
     password,
     email,

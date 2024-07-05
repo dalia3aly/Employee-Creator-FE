@@ -23,9 +23,9 @@ const SignupPage: React.FC = () => {
   return (
     <div
       className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center"
-      style={{ backgroundImage: `url(/bk.png)` }}>
+      style={{ backgroundImage: `url(/hm.png)` }}>
       <h2 className="text-xl font-semibold mb-4 mt-8 flex-col items-center justify-center max-w-60 bg-gray-300 p-4 rounded-md mx-auto my-auto">
-        Admin Signup
+        Admin Registration
       </h2>
       <div>
         <SignupForm onSubmit={handleSignup} />

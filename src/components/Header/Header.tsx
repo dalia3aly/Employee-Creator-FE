@@ -12,7 +12,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="p-4 bg-gray-600 text-white">
+    <header className="flex-center p-4 bg-gray-600 text-white">
       <nav>
         <ul className="flex flex-row  justify-center space-x-8">
           <li>
@@ -24,7 +24,7 @@ const Header: React.FC = () => {
                 <Link to="/employees">Employees' List</Link>
               </li>
               <li>
-                <Link to="/employees/new">Add Employee</Link>
+                <Link to="/employees/add">Add Employee</Link>
               </li>
               <li>
                 <button onClick={handleSignout} className="text-white">

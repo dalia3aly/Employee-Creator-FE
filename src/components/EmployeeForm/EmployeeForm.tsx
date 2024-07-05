@@ -78,7 +78,7 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
       <div className="flex flex-col items-center justify-start min-w-8 min-h-screen bg-gray-100">
         <form
           onSubmit={methods.handleSubmit(onSubmit)}
-          className="bg-gray-200 shadow-md rounded px-8 pt-6 pb-8 mb-4 min-w-96">
+          className="bg-white rounded px-8 pt-6 pb-8 mb-4 min-w-96">
           <PersonalInformation
             control={methods.control}
             errors={methods.formState.errors}

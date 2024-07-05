@@ -13,6 +13,13 @@ export const fetchEmployees = async () => {
   return response.data;
 };
 
+export const getEmployeeById = async (id: number) => {
+  const response = await axios.get(`${API_URL}/${id}`, {
+    headers: getAuthHeaders(),
+  });
+  return response.data;
+}
+
 export const deleteEmployee = async (id: number) => {
   await axios.delete(`${API_URL}/${id}`, { headers: getAuthHeaders() });
 };

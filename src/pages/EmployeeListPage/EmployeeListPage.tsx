@@ -4,18 +4,20 @@ import {
   deleteEmployee,
   updateEmployee,
 } from "../../api/employeeService";
-import EmployeeListItem from "../../components/EmployeeListItem/EmployeeListItem";
+import EmployeeList from "../../components/EmployeeList/EmployeeList";
 import Modal from "../../components/Modal/Modal";
 import EmployeeForm, {
   EmployeeFormData,
 } from "../../components/EmployeeForm/EmployeeForm";
 import { Employee } from "../../types";
+import { useNavigate } from "react-router-dom";
 
 const EmployeeListPage: React.FC = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] =
     useState<EmployeeFormData | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getEmployees = async () => {
@@ -50,6 +52,10 @@ const EmployeeListPage: React.FC = () => {
     setEmployees(employees.filter((employee) => employee.id !== id));
   };
 
+  const handleView = (id: number) => {
+    navigate(`/employees/${id}`);
+  };
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedEmployee(null);
@@ -71,14 +77,12 @@ const EmployeeListPage: React.FC = () => {
     <div
       className="flex flex-col min-h-screen bg-cover bg-center"
       style={{ backgroundImage: `url(/pgbk.png)` }}>
-      {employees.map((employee) => (
-        <EmployeeListItem
-          key={employee.id}
-          employee={employee}
-          onEdit={handleEdit}
-          onRemove={handleRemove}
-        />
-      ))}
+      <EmployeeList
+        employees={employees}
+        onEdit={handleEdit}
+        onRemove={handleRemove}
+        onView={handleView}
+      />
       {isModalOpen && selectedEmployee && (
         <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
           <EmployeeForm
