@@ -29,7 +29,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="login-form">
-      <div className="flex-col items-center justify-center max-w-60 bg-gray-400 p-4 rounded-md mx-auto my-auto">
+      <div
+        className="flex-col items-center justify-center max-w-60 bg-indigo-200 shadow-md p-4 rounded-md mx-auto">
         <div className="mb-4">
           <label className="block text-gray-900">Username</label>
           <Controller

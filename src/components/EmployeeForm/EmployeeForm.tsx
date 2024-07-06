@@ -27,7 +27,7 @@ const employeeSchema = z.object({
     .optional(),
   contractType: z.nativeEnum(ContractType),
   startDate: z.string().min(1, "Start date is required"),
-  finishDate: z.string().optional(),
+  finishDate: z.union([z.string(), z.null()]).optional(),
   onGoing: z.boolean().optional(),
   employmentType: z.nativeEnum(EmploymentType),
   hoursPerWeek: z.preprocess(
@@ -66,16 +66,23 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
       },
       contractType: ContractType.PERMANENT,
       startDate: "",
-      finishDate: "",
+      finishDate: null,
       onGoing: false,
       employmentType: EmploymentType.FULL_TIME,
       hoursPerWeek: 40,
     },
   });
 
+   const handleSubmit = (data: EmployeeFormData) => {
+     if (data.onGoing) {
+       data.finishDate = null;
+     }
+     onSubmit(data);
+   };
+
   return (
     <FormProvider {...methods}>
-      <div className="flex flex-col items-center justify-start min-w-8 min-h-screen bg-gray-100">
+      <div className="flex flex-col items-center justify-start min-w-8 min-h-screen bg-white">
         <form
           onSubmit={methods.handleSubmit(onSubmit)}
           className="bg-white rounded px-8 pt-6 pb-8 mb-4 min-w-96">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -42,7 +42,7 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSubmit, message }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="signup-form">
-      <div className="flex-col items-center justify-center max-w-60 bg-gray-300 p-4 rounded-md mx-auto my-auto">
+      <div className="flex-col items-center justify-center max-w-60 bg-indigo-200 p-4 rounded-md mx-auto my-auto">
         <div className="mb-4">
           <label className="block text-gray-700">Username</label>
           <Controller

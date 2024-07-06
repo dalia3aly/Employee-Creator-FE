@@ -11,6 +11,7 @@ import EmployeeForm, {
 } from "../../components/EmployeeForm/EmployeeForm";
 import { Employee } from "../../types";
 import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 
 const EmployeeListPage: React.FC = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -18,11 +19,14 @@ const EmployeeListPage: React.FC = () => {
   const [selectedEmployee, setSelectedEmployee] =
     useState<EmployeeFormData | null>(null);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getEmployees = async () => {
+      setIsLoading(true);
       const employees = await fetchEmployees();
       setEmployees(employees);
+      setIsLoading(false);
     };
     getEmployees();
   }, []);
@@ -41,6 +45,7 @@ const EmployeeListPage: React.FC = () => {
           country: "Australia",
         },
         hoursPerWeek: employee.hoursPerWeek || 0,
+        finishDate: employee.finishDate || null,
       });
       setIsModalOpen(true);
     }
@@ -50,6 +55,7 @@ const EmployeeListPage: React.FC = () => {
   const handleRemove = async (id: number) => {
     await deleteEmployee(id);
     setEmployees(employees.filter((employee) => employee.id !== id));
+    setIsLoading(false);
   };
 
   const handleView = (id: number) => {
@@ -63,20 +69,28 @@ const EmployeeListPage: React.FC = () => {
 
   const handleUpdateEmployee = async (data: EmployeeFormData) => {
     if (selectedEmployee && selectedEmployee.id) {
+      setIsLoading(true);
       await updateEmployee(selectedEmployee.id, data);
       const updatedEmployees = employees.map((emp) =>
-        emp.id === selectedEmployee.id ? { ...emp, ...data } : emp
+        emp.id === selectedEmployee.id
+          ? { ...emp, ...data, finishDate: data.finishDate || undefined }
+          : emp
       );
       setEmployees(updatedEmployees);
       setIsModalOpen(false);
       setSelectedEmployee(null);
+      setIsLoading(false);
     }
   };
 
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <div
-      className="flex flex-col min-h-screen bg-cover bg-center"
-      style={{ backgroundImage: `url(/pgbk.png)` }}>
+      className="flex flex-col min-h-screen bg-cover bg-fixed bg-no-repeat bg-center"
+      style={{ backgroundImage: `url(/hm.png)` }}>
       <EmployeeList
         employees={employees}
         onEdit={handleEdit}

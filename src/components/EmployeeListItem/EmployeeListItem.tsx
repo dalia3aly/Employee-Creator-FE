@@ -1,3 +1,4 @@
+// src/components/EmployeeListItem/EmployeeListItem.tsx
 import React from "react";
 import { Employee } from "../../types";
 import EditButton from "../Button/EditButton";
@@ -24,8 +25,8 @@ const EmployeeListItem: React.FC<EmployeeListItemProps> = ({
         <p className="text-sm">
           {employee.contractType} - {employee.employmentType}
         </p>
-        <p>Email: {employee.email}</p>
-        <p>Phone: {employee.mobileNumber}</p>
+        <p>✉ {employee.email}</p>
+        <p>📱 {employee.mobileNumber}</p>
       </div>
       <div>
         {employee.id !== undefined && (

@@ -14,7 +14,7 @@ const EmploymentStatus: React.FC<EmploymentStatusProps> = ({
   const onGoingValue = useWatch({
     control,
     name: "onGoing",
-    defaultValue: false,
+    defaultValue: false, 
   });
 
   return (
@@ -45,7 +45,7 @@ const EmploymentStatus: React.FC<EmploymentStatusProps> = ({
               type="date"
               {...field}
               className="w-full mt-1 p-2 border rounded"
-              value={field.value || ""}
+              value={field.value || undefined}
             />
           )}
         />
