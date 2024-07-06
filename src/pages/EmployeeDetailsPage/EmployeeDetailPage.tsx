@@ -70,14 +70,6 @@ const EmployeeDetailPage: React.FC = () => {
                 Permanent Address:
               </h2>
               <p className="text-lg">
-                <span className="font-semibold">Country:</span>{" "}
-                {employee.address.country}
-              </p>
-              <p className="text-lg">
-                <span className="font-semibold">State:</span>{" "}
-                {employee.address.state}
-              </p>
-              <p className="text-lg">
                 <span className="font-semibold">Unit Number:</span>{" "}
                 {employee.address.unitNumber}
               </p>
@@ -93,6 +85,14 @@ const EmployeeDetailPage: React.FC = () => {
               <p className="text-lg">
                 <span className="font-semibold">Postcode:</span>{" "}
                 {employee.address.postcode}
+              </p>
+              <p className="text-lg">
+                <span className="font-semibold">State:</span>{" "}
+                {employee.address.state}
+              </p>
+              <p className="text-lg">
+                <span className="font-semibold">Country:</span>{" "}
+                {employee.address.country}
               </p>
             </>
           )}

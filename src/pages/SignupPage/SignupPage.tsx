@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SignupForm from "../../components/Signup/SignupForm";
 import { signup } from "../../api/authService";
+import { AxiosError } from "axios";
 
 const SignupPage: React.FC = () => {
   const navigate = useNavigate();
+  const [message, setMessage] = useState<string | null>(null);
 
   const handleSignup = async (data: {
     username: string;
@@ -13,10 +15,27 @@ const SignupPage: React.FC = () => {
   }) => {
     try {
       const response = await signup(data.username, data.password, data.email);
-      localStorage.setItem("token", response.token);
-      navigate("/employees");
+      setMessage("User created successfully! Redirecting to login page...");
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
     } catch (error) {
       console.error("Signup failed", error);
+
+      // narrow down the type of "error"
+      if (error instanceof AxiosError) {
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) {
+          setMessage(error.response.data.message); // server-side validation error message
+        } else {
+          setMessage("Signup failed. Please try again.");
+        }
+      } else {
+        setMessage("An unexpected error occurred. Please try again.");
+      }
     }
   };
 
@@ -28,7 +47,7 @@ const SignupPage: React.FC = () => {
         Admin Registration
       </h2>
       <div>
-        <SignupForm onSubmit={handleSignup} />
+        <SignupForm onSubmit={handleSignup} message={message} />
       </div>
     </div>
   );

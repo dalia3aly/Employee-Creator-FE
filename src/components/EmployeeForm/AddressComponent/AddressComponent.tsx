@@ -6,16 +6,7 @@ import {
   fetchPlaceDetails,
 } from "../../../api/addressService";
 
-const australianStates = [
-  "NSW",
-  "VIC",
-  "QLD",
-  "WA",
-  "SA",
-  "TAS",
-  "ACT",
-  "NT",
-];
+const australianStates = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"];
 
 interface AddressComponentProps {
   control: Control<EmployeeFormData>;
@@ -51,11 +42,11 @@ const AddressComponent: React.FC<AddressComponentProps> = ({
   const handleFetchPlaceDetails = async (placeId: string) => {
     try {
       const addressComponents = await fetchPlaceDetails(placeId);
-      const streetNumberAndName = addressComponents.find((component: any) =>
-        component.types.includes("route")
-      )?.long_name;
       const streetNumber = addressComponents.find((component: any) =>
         component.types.includes("street_number")
+      )?.long_name;
+      const streetName = addressComponents.find((component: any) =>
+        component.types.includes("route")
       )?.long_name;
       const suburb = addressComponents.find((component: any) =>
         component.types.includes("locality")
@@ -63,18 +54,21 @@ const AddressComponent: React.FC<AddressComponentProps> = ({
       const postcode = addressComponents.find((component: any) =>
         component.types.includes("postal_code")
       )?.long_name;
+      const state = addressComponents.find((component: any) =>
+        component.types.includes("administrative_area_level_1")
+      )?.short_name;
 
-      if (streetNumber && streetNumberAndName) {
-        setValue(
-          "address.streetAddress",
-          `${streetNumber} ${streetNumberAndName}`
-        );
+      if (streetNumber && streetName) {
+        setValue("address.streetAddress", `${streetNumber} ${streetName}`);
       }
       if (suburb) {
         setValue("address.suburb", suburb);
       }
       if (postcode) {
         setValue("address.postcode", postcode);
+      }
+      if (state) {
+        setValue("address.state", state);
       }
       setSuggestions([]);
     } catch (error) {
@@ -84,7 +78,6 @@ const AddressComponent: React.FC<AddressComponentProps> = ({
 
   const handleSuggestionClick = (suggestion: Suggestion) => {
     handleFetchPlaceDetails(suggestion.place_id);
-    // Extract and set only the street number and name
     const [streetNumberAndName] = suggestion.description.split(",");
     setValue("address.streetAddress", streetNumberAndName);
   };
@@ -162,9 +155,7 @@ const AddressComponent: React.FC<AddressComponentProps> = ({
             <div>
               <select {...field} className="w-full mt-1 p-2 border rounded">
                 {australianStates.map((state) => (
-                  <option 
-                  defaultValue={state === "NSW" ? "selected" : ""}
-                  key={state} value={state}>
+                  <option key={state} value={state}>
                     {state}
                   </option>
                 ))}

@@ -14,15 +14,15 @@ const employeeSchema = z.object({
   middleName: z.string().optional(),
   lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Invalid email address"),
-  mobileNumber: z.string().min(1, "Mobile number is required"),
+  mobileNumber: z.string().min(10, "Invalid mobile number").optional(),
   address: z
     .object({
       unitNumber: z.string().optional(),
-      streetAddress: z.string().optional(),
-      suburb: z.string().optional(),
-      state: z.string().optional(),
-      postcode: z.string().optional(),
-      country: z.string().optional().default("Australia"),
+      streetAddress: z.string(),
+      suburb: z.string(),
+      state: z.string(),
+      postcode: z.string(),
+      country: z.string().default("Australia"),
     })
     .optional(),
   contractType: z.nativeEnum(ContractType),

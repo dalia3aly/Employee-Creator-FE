@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const signupSchema = z.object({
-  username: z.string().min(1, "Username is required"),
-  password: z.string().min(1, "Password is required"),
+  username: z
+    .string()
+    .min(
+      8,
+      "Username must be at least 8 characters long and may contain both letters and digits."
+    ),
+  password: z
+    .string()
+    .min(
+      1,
+      "Password must be at least 8 characters long and must contain both letters and digits"
+    ),
   email: z.string().email("Invalid email address"),
 });
 
@@ -13,9 +23,10 @@ type SignupFormInputs = z.infer<typeof signupSchema>;
 
 interface SignupFormProps {
   onSubmit: (data: SignupFormInputs) => void;
+  message: string | null;
 }
 
-const SignupForm: React.FC<SignupFormProps> = ({ onSubmit }) => {
+const SignupForm: React.FC<SignupFormProps> = ({ onSubmit, message }) => {
   const {
     handleSubmit,
     control,
@@ -81,6 +92,12 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSubmit }) => {
             <p className="text-red-600">{errors.email.message}</p>
           )}
         </div>
+
+        {message && (
+          <div className="mb-4">
+            <p className="text-green-600">{message}</p>
+          </div>
+        )}
 
         <div className="flex justify-end">
           <button
