@@ -1,25 +1,24 @@
 export interface Employee {
-  id: number;
+  id?: number;
   firstName: string;
-  middleName?: string;
   lastName: string;
   email: string;
-  mobileNumber: string;
+  mobileNumber?: string;
+  address?: Address;
   contractType: ContractType;
   startDate: string;
   finishDate?: string;
   onGoing?: boolean;
   employmentType: EmploymentType;
   hoursPerWeek?: number;
-  address?: Address;
 }
 
 export interface Address {
   unitNumber?: string;
-  streetAddress?: string;
-  suburb?: string;
-  state?: string;
-  postcode?: string;
+  streetAddress: string;
+  suburb: string;
+  state: string;
+  postcode: string;
   country: string;
 }
 

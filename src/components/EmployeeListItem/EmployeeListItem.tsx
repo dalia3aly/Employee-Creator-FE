@@ -8,7 +8,7 @@ interface EmployeeListItemProps {
   employee: Employee;
   onEdit: (id: number) => void;
   onRemove: (id: number) => void;
-  onView: (id: number) => void;     // the newly added prop for view action
+  onView: (id: number) => void;
 }
 
 const EmployeeListItem: React.FC<EmployeeListItemProps> = ({
@@ -28,15 +28,19 @@ const EmployeeListItem: React.FC<EmployeeListItemProps> = ({
         <p>Phone: {employee.mobileNumber}</p>
       </div>
       <div>
-        <OpenButton onClick={() => onView(employee.id)} className="mr-2">
-          View
-        </OpenButton>
-        <EditButton onClick={() => onEdit(employee.id)} className="mr-2">
-          Edit
-        </EditButton>
-        <RemoveButton onClick={() => onRemove(employee.id)}>
-          Remove
-        </RemoveButton>
+        {employee.id !== undefined && (
+          <>
+            <OpenButton onClick={() => onView(employee.id!)} className="mr-2">
+              View
+            </OpenButton>
+            <EditButton onClick={() => onEdit(employee.id!)} className="mr-2">
+              Edit
+            </EditButton>
+            <RemoveButton onClick={() => onRemove(employee.id!)}>
+              Remove
+            </RemoveButton>
+          </>
+        )}
       </div>
     </div>
   );

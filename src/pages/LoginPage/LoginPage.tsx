@@ -1,18 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginForm from "../../components/Login/LoginForm";
 import { login } from "../../api/authService";
+import Notification from "../../components/Notification/Notification";
 
 const LoginPage: React.FC = () => {
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleLogin = async (data: { username: string; password: string }) => {
-    try {
-      const response = await login(data.username, data.password);
+    const response = await login(data.username, data.password);
+    if (response.error) {
+      setError(response.error);
+    } else {
       localStorage.setItem("token", response.token);
       navigate("/employees");
-    } catch (error) {
-      console.error("Login failed", error);
     }
   };
 
@@ -26,6 +28,7 @@ const LoginPage: React.FC = () => {
       <div>
         <LoginForm onSubmit={handleLogin} />
       </div>
+      {error && <Notification message={error} type="error" />}
     </div>
   );
 };

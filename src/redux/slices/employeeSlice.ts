@@ -8,55 +8,77 @@ import { Employee } from "../../types";
 
 export const fetchEmployeesThunk = createAsyncThunk<Employee[]>(
   "employees/fetchEmployees",
-  async () => {
-    const employees = await fetchEmployees();
-    return employees;
+  async (_, { rejectWithValue }) => {
+    try {
+      const employees = await fetchEmployees();
+      return employees;
+    } catch (error) {
+      return rejectWithValue("Failed to fetch employees.");
+    }
   }
 );
 
 export const createEmployeeThunk = createAsyncThunk<Employee, Employee>(
   "employees/createEmployee",
-  async (employee: Employee) => {
-    const newEmployee = await createEmployee(employee);
-    return newEmployee;
+  async (employee: Employee, { rejectWithValue }) => {
+    try {
+      const newEmployee = await createEmployee(employee);
+      return newEmployee;
+    } catch (error) {
+      return rejectWithValue("Failed to create employee.");
+    }
   }
 );
 
 export const deleteEmployeeThunk = createAsyncThunk<number, number>(
   "employees/deleteEmployee",
-  async (id: number) => {
-    await deleteEmployee(id);
-    return id;
+  async (id: number, { rejectWithValue }) => {
+    try {
+      await deleteEmployee(id);
+      return id;
+    } catch (error) {
+      return rejectWithValue("Failed to delete employee.");
+    }
   }
 );
 
 const employeeSlice = createSlice({
   name: "employees",
-  initialState: [] as Employee[],
+  initialState: { list: [] as Employee[], error: null as string | null },
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(
       fetchEmployeesThunk.fulfilled,
       (state, action: PayloadAction<Employee[]>) => {
-        console.log("fetchEmployeesThunk fulfilled:", action.payload);
-        return action.payload;
+        state.list = action.payload;
       }
     );
     builder.addCase(
       createEmployeeThunk.fulfilled,
       (state, action: PayloadAction<Employee>) => {
-        console.log("createEmployeeThunk fulfilled:", action.payload);
-        state.push(action.payload);
+        state.list.push(action.payload);
       }
     );
     builder.addCase(
       deleteEmployeeThunk.fulfilled,
       (state, action: PayloadAction<number>) => {
-        console.log("deleteEmployeeThunk fulfilled:", action.payload);
-        return state.filter((employee) => employee.id !== action.payload);
+        state.list = state.list.filter(
+          (employee) => employee.id !== action.payload
+        );
       }
     );
+    builder.addCase(fetchEmployeesThunk.rejected, (state, action) => {
+      state.error = action.payload as string;
+    });
+    builder.addCase(createEmployeeThunk.rejected, (state, action) => {
+      state.error = action.payload as string;
+    });
+    builder.addCase(deleteEmployeeThunk.rejected, (state, action) => {
+      state.error = action.payload as string;
+    });
   },
 });
+
+export const selectEmployeeError = (state: any) => state.employees.error;
 
 export default employeeSlice.reducer;
