@@ -18,7 +18,11 @@ const AddEmployee: React.FC = () => {
   };
 
   const handleAddEmployee = async (data: EmployeeFormData) => {
-    const employeeData = {...data, id: 0};
+    const employeeData = {
+      ...data,
+      id: 0,
+      finishDate: data.finishDate || undefined,
+    };
     try {
       await dispatch(createEmployeeThunk(employeeData));
       console.log("Employee added:", data);

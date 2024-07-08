@@ -33,19 +33,6 @@ const ContactDetails: React.FC<ContactDetailsProps> = ({ control, errors }) => (
         <p className="text-red-600">{errors.mobileNumber.message}</p>
       )}
     </div>
-    <div className="mb-4">
-      <label className="block text-gray-700">Residential Address</label>
-      <Controller
-        name="residentialAddress"
-        control={control}
-        render={({ field }) => (
-          <input {...field} className="w-full mt-1 p-2 border rounded" />
-        )}
-      />
-      {errors.residentialAddress && (
-        <p className="text-red-600">{errors.residentialAddress.message}</p>
-      )}
-    </div>
   </div>
 );
 

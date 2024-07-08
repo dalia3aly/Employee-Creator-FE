@@ -1,17 +1,25 @@
 export interface Employee {
-  id: number;
+  id?: number;
   firstName: string;
-  middleName?: string;
   lastName: string;
   email: string;
-  mobileNumber: string;
-  residentialAddress?: string;
+  mobileNumber?: string;
+  address?: Address;
   contractType: ContractType;
   startDate: string;
   finishDate?: string;
   onGoing?: boolean;
   employmentType: EmploymentType;
   hoursPerWeek?: number;
+}
+
+export interface Address {
+  unitNumber?: string;
+  streetAddress: string;
+  suburb: string;
+  state: string;
+  postcode: string;
+  country: string;
 }
 
 export enum ContractType {
